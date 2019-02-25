@@ -1,2 +1,80 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="random-tab" data-toggle="tab" href="#random" role="tab" aria-controls="random"
+            aria-selected="true">Aleatório</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="manual-tab" data-toggle="tab" href="#manual" role="tab" aria-controls="manual"
+            aria-selected="false">Manual</a>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="random" role="tabpanel" aria-labelledby="random-tab">
+        <button type="button" class="btn btn-primary btn-lg btn-block top-margin-1em" id="random-generate">Gerar</button>
+    </div>
+    <div class="tab-pane fade" id="manual" role="tabpanel" aria-labelledby="manual-tab">
+        <div class="row">
+            <div class="col-sm">
+                <div class="card top-margin-1em">
+                    <div class="card-body">
+                        <div class="card-title">Quem?</div>
+                        {{#each who}}
+                        <p>
+                            <input type="radio" value="{{@index}}" name="who"> {{.}}
+                        </p>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card top-margin-1em">
+                    <div class="card-body">
+                        <div class="card-title">Fazendo o quê?</div>
+                        {{#each are}}
+                        <p>
+                            <input type="radio" value="{{@index}}" name="are"> {{.}}
+                        </p>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card top-margin-1em">
+                    <div class="card-body">
+                        <div class="card-title">Com Quem?</div>
+                        {{#each workingWith}}
+                        <p>
+                            <input type="radio" value="{{@index}}" name="workingWith"> {{.}}
+                        </p>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div class="card top-margin-1em">
+                    <div class="card-body">
+                        <div class="card-title">Para quê?</div>
+                        {{#each todo}}
+                        <p>
+                            <input type="radio" value="{{@index}}" name="todo"> {{.}}
+                        </p>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-lg btn-block top-margin-1em" id="manual-generate">Gerar</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        <div class="card top-margin-1em">
+            <div class="card-content">
+                <img src="" alt="olavo post" id="result" style="display: none">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/javascripts/index.js"></script>
