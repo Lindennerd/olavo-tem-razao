@@ -11,17 +11,17 @@ router.get('/', function (req, res, next) {
 
 router.get('/generator', function (req, res, next) {
     try {
-        console.log(req.params);
-        if (!req.params.who) {
-            var olavoTheory = generateTheory();
-            generateImage(olavoTheory, function(err, image) {
-                res.send(image);
-            });
-        } else {
-            res.send('Ok');
-        }
+        var olavoTheory = generateTheory(
+            req.query.who,
+            req.query.are,
+            req.query.workingWith,
+            req.query.todo
+        );
+        generateImage(olavoTheory, function(err, image) {
+            res.send(image);
+        });
+
     } catch(ex) {
-        console.error(ex);
         res.status(500).send(ex);
     }
 

@@ -12,8 +12,6 @@
             data[val.name] = val.value; 
         }).get();
 
-        console.log(data);
-
         $.get('/generator', data).then(function (result) {
             $('#result').attr('src', result);
             $('#result').show();
