@@ -20,7 +20,7 @@
                         <div class="card-title">Quem?</div>
                         {{#each who}}
                         <p>
-                            <input type="radio" value="{{@index}}" name="who"> {{.}}
+                            <input type="radio" value="{{@index}}" name="who"> {{text}}
                         </p>
                         {{/each}}
                     </div>
@@ -44,7 +44,7 @@
                         <div class="card-title">Com Quem?</div>
                         {{#each workingWith}}
                         <p>
-                            <input type="radio" value="{{@index}}" name="workingWith"> {{.}}
+                            <input type="radio" value="{{@index}}" name="workingWith"> {{text}}
                         </p>
                         {{/each}}
                     </div>
@@ -68,8 +68,8 @@
         <button type="button" class="btn btn-primary btn-lg btn-block top-margin-1em" id="manual-generate">Gerar</button>
     </div>
 </div>
-<div class="row">
-    <div class="col-sm">
+<div class="row align-items-center">
+    <div class="col">
         <div class="card top-margin-1em">
             <div class="card-content">
                 <img src="" alt="olavo post" id="result" style="display: none">

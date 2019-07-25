@@ -1,5 +1,6 @@
 var express = require('express');
 var jimp = require('jimp');
+var olavosMind = require('../lib/olavosMind');
 var router = express.Router();
 
 var olavoOptions = require('../generator');
@@ -11,7 +12,7 @@ router.get('/', function (req, res, next) {
 
 router.get('/generator', function (req, res, next) {
     try {
-        var olavoTheory = generateTheory(
+        var olavoTheory = olavosMind.generateTheory(
             req.query.who,
             req.query.are,
             req.query.workingWith,
@@ -26,37 +27,6 @@ router.get('/generator', function (req, res, next) {
     }
 
  })
-
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
-}
-
-function generateTheory(whoInd, areInd, workingWithInd, todoInd) {
-    var whoIndex = whoInd 
-        ? whoInd 
-        : getRandomInt(0, olavoOptions.who.length);
-
-    var areIndex = areInd 
-        ? areInd 
-        : getRandomInt(0, olavoOptions.are.length);
-
-    var workingWithIndex = workingWithInd 
-        ? workingWithInd 
-        : getRandomInt(0, olavoOptions.workingWith.length);
-
-    var todoIndex = todoInd
-        ? todoInd 
-        : getRandomInt(0, olavoOptions.todo.length);
-
-    var olavoTheory = olavoOptions.who[whoIndex] + " " +
-        olavoOptions.are[areIndex] + " " +
-        olavoOptions.workingWith[workingWithIndex] + " " +
-        olavoOptions.todo[todoIndex];
-
-    return olavoTheory;
-}
 
 function generateImage(text, callback) {
     
