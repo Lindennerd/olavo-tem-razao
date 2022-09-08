@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
+import { ManualStep, SelectedOption, Step } from "../components/ManualStep";
 import { trpc } from "../utils/trpc";
-
-interface Step {
-  label: string;
-  index: number;
-  isActive: boolean;
-  isDone: boolean;
-}
 
 export default function ManualPage() {
   const {
@@ -20,6 +14,7 @@ export default function ManualPage() {
   });
 
   const [steps, setSteps] = useState<Step[]>();
+  const [selectedOptions, setSelectedOption] = useState<SelectedOption[]>();
 
   function stepNameFactory(step: string) {
     switch (step) {
@@ -38,20 +33,50 @@ export default function ManualPage() {
 
   useEffect(() => {
     setSteps((curr) => {
-      return Object.keys(conspiracy!).map((c, index) => {
-        return {
-          label: stepNameFactory(c),
-          index: index,
-          isActive: index === 0,
-          isDone: false,
-        };
-      });
+      if (conspiracy)
+        return Object.keys(conspiracy!).map((c, index) => {
+          return {
+            label: stepNameFactory(c),
+            index: index,
+            isActive: index === 0,
+            isDone: false,
+            items: getStepItems(index),
+          };
+        });
     });
   }, [conspiracy]);
 
+  function getActiveStep() {
+    if (steps && steps.some((s) => s.isActive))
+      return steps?.find((s) => s.isActive);
+  }
+
+  function getStepItems(index: number): string[] {
+    if (conspiracy) {
+      const conspiracyValue = Object.values(conspiracy);
+      const activeConspiracies = conspiracyValue[index]!;
+      return activeConspiracies?.map((w) =>
+        typeof w === "string" ? w : w.text
+      );
+    } else return [];
+  }
+
+  function onSelected(selected: SelectedOption) {
+    setSelectedOption((curr) => {
+      return [
+        ...(curr ? curr.filter((s) => s.label !== selected.label) : []), selected
+      ];
+    });
+  }
+
   return (
-    <>
+    <div className="flex flex-row lg:flex-col gap-2">
       {isLoading && <ReactLoading />}
+      <div>
+        {selectedOptions && selectedOptions.map(op => (
+          <div>{op.label}</div>
+        ))}
+      </div>
       <div>
         <ul className="steps steps-vertical lg:steps-horizontal">
           {steps &&
@@ -68,13 +93,26 @@ export default function ManualPage() {
         </ul>
       </div>
       <div>
-        {steps &&
-          Object.values(conspiracy!)[
-            steps!.find((s) => s.isActive)!.index
-          ]?.map((w, index) => (
-            <div key={index}>{typeof w === "string" ? w : w.text}</div>
-          ))}
+        <div className="p-2 border rounded-md shadow-md mb-2">
+          {getActiveStep() !== undefined && conspiracy && (
+            <ManualStep step={getActiveStep()!} onSelected={onSelected} />
+          )}
+        </div>
+        <div className="flex gap-2 justify-between">
+          <button
+            disabled={getActiveStep()?.index === 0}
+            className="btn text-center"
+          >
+            Anterior
+          </button>
+          <button
+            disabled={getActiveStep()?.index === steps?.length}
+            className="btn text-center"
+          >
+            Próximo
+          </button>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
