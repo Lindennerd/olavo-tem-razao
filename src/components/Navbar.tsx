@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function Navbar() {
   return (
     <div className="navbar bg-base-200">
@@ -7,10 +9,14 @@ export function Navbar() {
       <div className="flex-none">
         <ul className="menu menu-horizontal p-0">
           <li>
-            <a>Automático</a>
+            <Link href="/">
+              <a>Automático</a>
+            </Link>
           </li>
           <li>
-            <a>Manual</a>
+            <Link href="/manual">
+              <a>Manual</a>
+            </Link>
           </li>
         </ul>
       </div>
