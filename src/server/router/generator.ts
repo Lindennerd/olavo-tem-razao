@@ -2,6 +2,7 @@ import { createRouter } from "./context";
 import jimp from "jimp";
 import { z } from "zod";
 import OlavosMind from "../../lib/olavosMind";
+import { TRPCError } from "@trpc/server";
 
 export const generateRouter = createRouter()
   .query("random", {
@@ -43,6 +44,8 @@ async function generateMeme(args?: IGenerateMeme) {
     args?.isWorkingWith,
     args?.todo
   );
+
+  console.log("generating image");
 
   const image = await jimp.read(
     "https://raw.githubusercontent.com/Lindennerd/olavo-tem-razao/master/public/images/olavo-post.jpg"
