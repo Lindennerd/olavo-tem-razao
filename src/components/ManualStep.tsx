@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { BiCheck } from "react-icons/bi";
 import selectedOptionsStore from "../store/useManualSelected";
 

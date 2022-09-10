@@ -53,7 +53,7 @@ function OlavosMind() {
   }
 
   function createPhrase(phrase: Phrase) {
-    var regExp = /(^.*?\s).*(\s.*$)/;
+    const regExp = /(^.*?\s).*(\s.*$)/;
     const words = regExp.exec(phrase.are)?.map((word) => word.trim());
     if (words) {
       phrase.are = phrase.are.replace(
@@ -91,17 +91,17 @@ function OlavosMind() {
     workingWithInd?: number,
     todoInd?: number
   ) {
-    var whoIndex = whoInd ? whoInd : getRandomInt(0, WhoList().length);
+    const whoIndex = whoInd ? whoInd : getRandomInt(0, WhoList().length);
 
-    var areIndex = areInd ? areInd : getRandomInt(0, areList().length);
+    const areIndex = areInd ? areInd : getRandomInt(0, areList().length);
 
-    var workingWithIndex = workingWithInd
+    const workingWithIndex = workingWithInd
       ? workingWithInd
       : getRandomInt(0, WorkingWithList().length);
 
-    var todoIndex = todoInd ? todoInd : getRandomInt(0, TodoList().length);
+    const todoIndex = todoInd ? todoInd : getRandomInt(0, TodoList().length);
 
-    var olavoTheory = createPhrase({
+    const olavoTheory = createPhrase({
       who: WhoList()[whoIndex]!,
       are: areList()[areIndex]!,
       workingWith: WorkingWithList()[workingWithIndex]!,
