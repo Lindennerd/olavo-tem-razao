@@ -45,7 +45,7 @@ async function generateMeme(args?: IGenerateMeme) {
 
   console.log("jpg server path", serverPath("/olavo-post.jpg"));
 
-  const image = await jimp.read(serverPath("/olavo-post.jpg"));
+  const image = await jimp.read("/olavo-post.jpg");
   const font = await jimp.loadFont(jimp.FONT_SANS_32_BLACK); //serverPath("/public/segoeui.ttf")
   const printedImage = await image.print(font, 10, 90, text, 700, 100);
   const imgUrl = await printedImage.getBase64Async(jimp.MIME_JPEG);
