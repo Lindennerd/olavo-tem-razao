@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
-import { ManualStep, SelectedOption, Step } from "../components/ManualStep";
+import { ManualStep } from "../components/ManualStep";
+import { Meme } from "../components/Meme";
+import { Stepper, Step } from "../components/Stepper";
+import { useMemeStore } from "../store/memeStore";
+import selectedOptionsStore from "../store/useManualSelected";
 import { trpc } from "../utils/trpc";
 
 export default function ManualPage() {
@@ -14,7 +18,14 @@ export default function ManualPage() {
   });
 
   const [steps, setSteps] = useState<Step[]>();
-  const [selectedOptions, setSelectedOption] = useState<SelectedOption[]>();
+  const { setMeme } = useMemeStore((state) => state);
+  const { selectedOptions, isStepDone } = selectedOptionsStore(
+    (state) => state
+  );
+
+  const generateMeme = trpc.useMutation(["generator.manual"], {
+    onSuccess: (data) => setMeme(data),
+  });
 
   function stepNameFactory(step: string) {
     switch (step) {
@@ -23,7 +34,7 @@ export default function ManualPage() {
       case "are":
         return "Esta";
       case "workingWith":
-        return "Trabalhando com";
+        return "Com";
       case "todo":
         return "Para quê?";
       default:
@@ -35,21 +46,24 @@ export default function ManualPage() {
     setSteps((curr) => {
       if (conspiracy)
         return Object.keys(conspiracy!).map((c, index) => {
+          const stepName = stepNameFactory(c);
           return {
-            label: stepNameFactory(c),
+            label: stepName,
             index: index,
             isActive: index === 0,
             isDone: false,
-            items: getStepItems(index),
+            content: (
+              <ManualStep
+                step={{
+                  label: stepName,
+                  items: getStepItems(index),
+                }}
+              />
+            ),
           };
         });
     });
   }, [conspiracy]);
-
-  function getActiveStep() {
-    if (steps && steps.some((s) => s.isActive))
-      return steps?.find((s) => s.isActive);
-  }
 
   function getStepItems(index: number): string[] {
     if (conspiracy) {
@@ -61,58 +75,31 @@ export default function ManualPage() {
     } else return [];
   }
 
-  function onSelected(selected: SelectedOption) {
-    setSelectedOption((curr) => {
-      return [
-        ...(curr ? curr.filter((s) => s.label !== selected.label) : []), selected
-      ];
+  const resultStep: Step = {
+    isActive: false,
+    isDone: false,
+    label: "Resultado",
+    content: <Meme />,
+  };
+
+  function getMeme() {
+    generateMeme.mutate({
+      who: selectedOptions.find((op) => op.label === "Quem")!.value,
+      are: selectedOptions.find((op) => op.label === "Esta")!.value,
+      workingWith: selectedOptions.find((op) => op.label === "Com")!.value,
+      todo: selectedOptions.find((op) => op.label === "Para quê?")!.value,
     });
   }
 
   return (
-    <div className="flex flex-row lg:flex-col gap-2">
+    <>
       {isLoading && <ReactLoading />}
-      <div>
-        {selectedOptions && selectedOptions.map(op => (
-          <div>{op.label}</div>
-        ))}
-      </div>
-      <div>
-        <ul className="steps steps-vertical lg:steps-horizontal">
-          {steps &&
-            steps.map((s) => (
-              <li
-                key={s.index}
-                className={`step 
-              ${s.isActive && "step-primary"} 
-              ${s.isDone && "step-success"}`}
-              >
-                {s.label}
-              </li>
-            ))}
-        </ul>
-      </div>
-      <div>
-        <div className="p-2 border rounded-md shadow-md mb-2">
-          {getActiveStep() !== undefined && conspiracy && (
-            <ManualStep step={getActiveStep()!} onSelected={onSelected} />
-          )}
-        </div>
-        <div className="flex gap-2 justify-between">
-          <button
-            disabled={getActiveStep()?.index === 0}
-            className="btn text-center"
-          >
-            Anterior
-          </button>
-          <button
-            disabled={getActiveStep()?.index === steps?.length}
-            className="btn text-center"
-          >
-            Próximo
-          </button>
-        </div>
-      </div>
-    </div>
+      {steps && <Stepper steps={[...steps, resultStep]} />}
+      {isStepDone() && (
+        <button className="btn btn-success w-full" onClick={(e) => getMeme()}>
+          Gerar
+        </button>
+      )}
+    </>
   );
 }
