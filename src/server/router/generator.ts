@@ -2,7 +2,12 @@ import { createRouter } from "./context";
 import jimp from "jimp";
 import { z } from "zod";
 import OlavosMind from "../../lib/olavosMind";
-import serverPath from "../../utils/server-path";
+
+const imageUrl =
+  "https://raw.githubusercontent.com/Lindennerd/olavo-tem-razao/master/public/olavo-post.jpg";
+
+const fontUrl =
+  "https://raw.githubusercontent.com/Lindennerd/olavo-tem-razao/master/public/open-sans-32-black.fnt";
 
 export const generateRouter = createRouter()
   .query("random", {
@@ -43,10 +48,10 @@ async function generateMeme(args?: IGenerateMeme) {
     args?.todo
   );
 
-  const image = await jimp.read("/olavo-post.jpg");
-  const font = await jimp.loadFont(jimp.FONT_SANS_32_BLACK);
+  const image = await jimp.read(imageUrl);
+  const font = await jimp.loadFont(fontUrl);
   const printedImage = await image.print(font, 10, 90, text, 700, 100);
-  const imgUrl = await printedImage.getBase64Async(jimp.MIME_JPEG);
+  const imgUrl = await printedImage.getBase64Async("img/jpg");
 
   return imgUrl;
 }
