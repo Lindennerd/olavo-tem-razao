@@ -47,9 +47,7 @@ async function generateMeme(args?: IGenerateMeme) {
   const image = await jimp.read(
     "https://raw.githubusercontent.com/Lindennerd/olavo-tem-razao/master/public/images/olavo-post.jpg"
   );
-  const font = await jimp.loadFont(
-    "https://github.com/Lindennerd/olavo-tem-razao/blob/master/public/images/segoeui.ttf?raw=true"
-  );
+  const font = await jimp.loadFont("jimp.FONT_SANS_32_BLACK");
   const printedImage = await image.print(font, 10, 90, text, 700, 100);
   const imgUrl = await printedImage.getBase64Async(jimp.MIME_JPEG);
 
