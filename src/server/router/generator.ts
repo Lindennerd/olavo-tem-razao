@@ -3,6 +3,13 @@ import jimp from "jimp";
 import { z } from "zod";
 import OlavosMind from "../../lib/olavosMind";
 import serverPath from "../../utils/server-path";
+import path from "path";
+
+const plugin = require.resolve("@jimp/plugin-print");
+const jimpFont = path.resolve(
+  plugin,
+  "../../fonts/open-sans/open-sans-32-black/open-sans-32-black.fnt"
+);
 
 export const generateRouter = createRouter()
   .query("random", {
@@ -48,7 +55,7 @@ async function generateMeme(args?: IGenerateMeme) {
   const image = await jimp.read(
     "https://raw.githubusercontent.com/Lindennerd/olavo-tem-razao/master/public/images/olavo-post.jpg"
   );
-  const font = await jimp.loadFont(jimp.FONT_SANS_32_BLACK); //serverPath("/public/segoeui.ttf")
+  const font = await jimp.loadFont(jimpFont); //serverPath("/public/segoeui.ttf")
   const printedImage = await image.print(font, 10, 90, text, 700, 100);
   const imgUrl = await printedImage.getBase64Async(jimp.MIME_JPEG);
 
