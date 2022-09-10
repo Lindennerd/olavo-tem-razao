@@ -43,14 +43,10 @@ async function generateMeme(args?: IGenerateMeme) {
     args?.todo
   );
 
-  console.log("jpg server path", serverPath("/public/olavo-post.jpg"));
-
-  const image = await jimp.read(
-    "https://raw.githubusercontent.com/Lindennerd/olavo-tem-razao/master/public/images/olavo-post.jpg"
-  );
+  const image = await jimp.read(serverPath("/public/olavo-post.jpg"));
   const font = await jimp.loadFont(serverPath("/public/segoeui.ttf"));
   const printedImage = await image.print(font, 10, 90, text, 700, 100);
-  const imgUrl = await printedImage.getBase64Async(jimp.MIME_JPEG);
+  const imgUrl = await printedImage.getBase64Async("img/jpg");
 
   return imgUrl;
 }
