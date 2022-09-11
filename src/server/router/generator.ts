@@ -51,7 +51,7 @@ async function generateMeme(args?: IGenerateMeme) {
   const image = await jimp.read(imageUrl);
 
   console.log("h2");
-  const loadedFont = await jimp.loadFont(jimp.FONT_SANS_32_BLACK);
+  const loadedFont = await jimp.loadFont(serverPath(jimp.FONT_SANS_32_BLACK));
 
   console.log("h3");
 
