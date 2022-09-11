@@ -2,7 +2,7 @@ import { createRouter } from "./context";
 import jimp from "jimp";
 import { z } from "zod";
 import OlavosMind from "../../lib/olavosMind";
-import { font } from "../font";
+import serverPath from "../../utils/server-path";
 
 const imageUrl =
   "https://raw.githubusercontent.com/Lindennerd/olavo-tem-razao/master/public/olavo-post.jpg";
@@ -51,7 +51,7 @@ async function generateMeme(args?: IGenerateMeme) {
   const image = await jimp.read(imageUrl);
 
   console.log("h2");
-  const loadedFont = await jimp.loadFont(font);
+  const loadedFont = await jimp.loadFont(jimp.FONT_SANS_32_BLACK);
 
   console.log("h3");
 
