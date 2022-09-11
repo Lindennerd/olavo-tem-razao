@@ -52,7 +52,7 @@ async function generateMeme(args?: IGenerateMeme) {
 
   console.log("h2");
   const loadedFont = await jimp.loadFont(
-    "https://raw.githubusercontent.com/Lindennerd/olavo-tem-razao/master/public/open-sans-32-black.fnt"
+    serverPath("/public/open-sans-32-black.fnt")
   );
 
   console.log("h3");
