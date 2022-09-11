@@ -35,6 +35,7 @@ FROM node:16-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
+ENV SHELL /bin/sh
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
@@ -48,10 +49,10 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-USER nextjs
+USER root
 
 EXPOSE 3000
 
 ENV PORT 3000
 
-CMD ["node", "server.js"]
+CMD ["node", "server.js", "/bin/sh"]
