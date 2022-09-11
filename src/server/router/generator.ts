@@ -51,7 +51,9 @@ async function generateMeme(args?: IGenerateMeme) {
   const image = await jimp.read(imageUrl);
 
   console.log("h2");
-  const loadedFont = await jimp.loadFont(serverPath(jimp.FONT_SANS_32_BLACK));
+  const loadedFont = await jimp.loadFont(
+    "https://raw.githubusercontent.com/Lindennerd/olavo-tem-razao/master/public/open-sans-32-black.fnt"
+  );
 
   console.log("h3");
 
