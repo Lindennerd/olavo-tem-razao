@@ -47,7 +47,13 @@ async function generateMeme(args?: IGenerateMeme) {
   );
 
   const image = await jimp.read(imageUrl);
-  const loadedFont = await jimp.loadFont(jimp.FONT_SANS_32_BLACK);
+
+  console.log("image", image);
+
+  const loadedFont = await jimp.loadFont(
+    serverPath("/public/open-sans-32-black.fnt")
+  );
+  console.log("loaded font", loadedFont);
   const printedImage = await image.print(loadedFont, 10, 90, text, 700, 100);
   const imgUrl = await printedImage.getBase64Async("image/jpeg");
 

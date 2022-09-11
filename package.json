@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "docker-build": "docker build -t olavo-tem-razao .",
-    "docker-run": "docker run -d --publish 3000:3000 olavo-tem-razao"
+    "docker-run": "docker run -d --publish 3000:3000 olavo-tem-razao",
+    "docker-stop": "docker stop $(docker ps -q --filter ancestor=olavo-tem-razao)"
   },
   "dependencies": {
     "@trpc/client": "^9.27.2",
