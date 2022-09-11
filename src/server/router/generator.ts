@@ -48,7 +48,7 @@ async function generateMeme(args?: IGenerateMeme) {
 
   const image = await jimp.read(imageUrl);
   const loadedFont = await jimp.loadFont(
-    serverPath("./open-sans-32-black.fnt")
+    `${process.env.VERCEL_URL}/open-sans-32-black.fnt`
   );
   const printedImage = await image.print(loadedFont, 10, 90, text, 700, 100);
   const imgUrl = await printedImage.getBase64Async("image/jpeg");
