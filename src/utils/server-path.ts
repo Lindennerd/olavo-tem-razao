@@ -1,10 +1,11 @@
 import path from "path";
-import * as url from "url";
-
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+import getConfig from "next/config";
 
 const serverPath = (staticFilePath: string) => {
-  return path.join(__dirname, staticFilePath);
+  return path.join(
+    getConfig().serverRuntimeConfig.PROJECT_ROOT,
+    staticFilePath
+  );
 };
 
 export default serverPath;
