@@ -18,6 +18,7 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 export default defineNextConfig({
   reactStrictMode: true,
   swcMinify: true,
+  output: 'standalone',
   serverRuntimeConfig: {
     PROJECT_ROOT: __dirname
   }
