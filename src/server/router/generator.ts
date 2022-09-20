@@ -7,6 +7,9 @@ import serverPath from "../../utils/server-path";
 const imageUrl =
   "https://raw.githubusercontent.com/Lindennerd/olavo-tem-razao/master/public/olavo-post.jpg";
 
+const api_url =
+  "http://lindennerd1.pythonanywhere.com/api/image/pasteTextOnImage";
+
 export const generateRouter = createRouter()
   .query("random", {
     async resolve({ ctx, input }) {
@@ -46,16 +49,7 @@ async function generateMeme(args?: IGenerateMeme) {
     args?.todo
   );
 
-  const image = await jimp.read(imageUrl);
-
-  console.log("image", image);
-
-  const loadedFont = await jimp.loadFont(
-    serverPath("/public/open-sans-32-black.fnt")
-  );
-  console.log("loaded font", loadedFont);
-  const printedImage = await image.print(loadedFont, 10, 90, text, 700, 100);
-  const imgUrl = await printedImage.getBase64Async("image/jpeg");
-
-  return imgUrl;
+  const result = await fetch(`${api_url}?text=${text}&imageUrl=${imageUrl}`);
+  const json = await result.json();
+  return json.image;
 }
